@@ -1,16 +1,26 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [
 		{
-			"path": "pages/index/index",
+			"path": "pages/AppHome/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTextStyle": "black"
 			}
+		},
+		{
+			"path": "pages/SearchPage/index",
+			"style": {
+				"navigationBarTextStyle": "black",
+				"onReachBottomDistance":500
+			}
+		},
+		{
+			"path": "pages/SongList/index"
+		},
+		{
+			"path":"pages/SongList/SongListIntroduce"
 		}
 	],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationStyle": "custom"
 	}
 }
