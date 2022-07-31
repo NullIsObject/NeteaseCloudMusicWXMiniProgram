@@ -16,7 +16,7 @@ export default {
   name: "AppHeader",
   props: {
     isShowBtnBox: {
-      default: undefined,
+      default: false,
     },
   },
   computed: {

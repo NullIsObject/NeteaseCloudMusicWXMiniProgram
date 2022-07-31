@@ -1,6 +1,9 @@
 {
 	"pages": [
 		{
+			"path":"pages/PlayerPage/index"
+		},
+		{
 			"path": "pages/AppHome/index",
 			"style": {
 				"navigationBarTextStyle": "black"

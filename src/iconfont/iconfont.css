@@ -13,7 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-dianzan:before {
+.icon-good:before {
   content: "\e600";
 }
 
@@ -29,7 +29,7 @@
   content: "\eb5e";
 }
 
-.icon-zanting_o:before {
+.icon-stop:before {
   content: "\eb6c";
 }
 
