@@ -6,12 +6,11 @@
     </view>
     <view class="img-box">
       <view class="record-box">
-        <view class="record">
-          <image
-            mode="widthFix"
-            src="@/static/record.png"
-            :style="isPlayMusic || 'animation-play-state: paused'"
-          />
+        <view
+          class="record"
+          :style="'transform:rotate(' + recordRotate + 'deg'"
+        >
+          <image mode="widthFix" src="@/static/record.png" />
         </view>
         <view
           class="btn iconfont icon-play-that"
@@ -36,12 +35,23 @@ export default {
   data() {
     return {
       isPlayMusic: false, //判断动画暂停或播放
+      recordRotate: 0, //.record的旋转角度
+      addRecordRotateInterval: 0,//存放.record动画的定时器
     };
   },
   watch: {
-    isPlayMusic() {
-      console.log(1);
+    isPlayMusic(val) {
+      if (val) {
+        this.addRecordRotateInterval = setInterval(() => {
+          if (this.recordRotate < 360) this.recordRotate++;
+          else this.recordRotate = 0;
+        }, 50);
+      } else {
+        clearInterval(this.addRecordRotateInterval);
+      }
     },
+  },
+  methods: {
   },
 };
 </script>
@@ -74,17 +84,8 @@ export default {
         width: 100%;
         height: 100%;
         position: absolute;
-        @keyframes rotate {
-          from {
-            transform: rotateZ(0deg);
-          }
-          to {
-            transform: rotateZ(360deg);
-          }
-        }
         image {
           width: 100%;
-          animation: rotate 10s linear 0s infinite;
         }
       }
       .btn {
