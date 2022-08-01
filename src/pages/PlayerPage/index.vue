@@ -52,6 +52,7 @@ export default {
     },
   },
   created() {
+    //获取音乐数据
     this.$api.songDetail(this.pageMusicId).then((res) => {
       this.musicData = res.data.songs[0];
       this.playThatMusic()
