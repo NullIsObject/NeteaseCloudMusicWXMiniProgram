@@ -13,7 +13,18 @@ export function request({//设置默认值
             data,
             headers,
             timeout,
-            success: resolve,
+            success(res){
+                if(res.data.data&&res.data.data.code==-460){
+                    uni.showToast({
+                        title: '标题',
+                        duration: 2000
+                    });
+                    console.log(460)
+                    reject(res)
+                }else{
+                    resolve(res)
+                }
+            },
             fail: reject
         })
     })

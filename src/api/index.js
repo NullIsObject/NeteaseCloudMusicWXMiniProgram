@@ -48,3 +48,31 @@ export function playlistDetail(id) {//各个榜单数据
         }
     })
 }
+
+
+export function songDetail(ids) {//传入音乐id获取详细数据，多个id用','分隔
+    return request({
+        url: "/song/detail",
+        data: {
+            ids
+        }
+    })
+}
+
+export function songUrl(id) {//传入音乐id获取播放连接
+    return request({
+        url: "/song/url",
+        data: {
+            id
+        }
+    })
+}
+
+export function yric(id) {//传入音乐id获取歌词
+    return request({
+        url: "/lyric",
+        data: {
+            id
+        }
+    })
+}

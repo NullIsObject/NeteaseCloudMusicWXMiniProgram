@@ -11,6 +11,7 @@
           :style="'transform:rotate(' + recordRotate + 'deg'"
         >
           <image mode="widthFix" src="@/static/record.png" />
+          <image mode="widthFIx" :src="musicData.al.picUrl" class="bg-img" />
         </view>
         <view
           class="btn iconfont icon-play-that"
@@ -36,7 +37,7 @@ export default {
     return {
       isPlayMusic: false, //判断动画暂停或播放
       recordRotate: 0, //.record的旋转角度
-      addRecordRotateInterval: 0,//存放.record动画的定时器
+      addRecordRotateInterval: 0, //存放.record动画的定时器
     };
   },
   watch: {
@@ -51,8 +52,23 @@ export default {
       }
     },
   },
-  methods: {
+  methods: {},
+  props: {
+    musicData: {
+      //获取当前页面的数据
+      default() {
+        return {
+          al: {
+            picUrl: "",
+          },
+        };
+      },
+    },
+    pageMusicId:''
   },
+  created(){
+    
+  }
 };
 </script>
 <style lang="scss">
@@ -80,12 +96,22 @@ export default {
       position: relative;
       border-radius: 50%;
       background-color: rgba($color: #fff, $alpha: 0.5);
+      overflow: hidden;
       .record {
         width: 100%;
         height: 100%;
         position: absolute;
         image {
           width: 100%;
+        }
+        .bg-img {
+          position: absolute;
+          width: calc(100% - 20px);
+          border-radius: 50%;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          z-index: -1;
         }
       }
       .btn {
