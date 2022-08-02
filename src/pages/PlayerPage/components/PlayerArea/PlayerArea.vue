@@ -53,19 +53,14 @@ export default {
       } else {
         clearInterval(this.addRecordRotateInterval);
       }
+
+      //音乐的播放和暂停
       const bgAudioManager = uni.getBackgroundAudioManager();
-      if (val) {
-        //音乐的播放和暂停
-        if (bgAudioManager.musicID == this.musicData.id) {
-          //背景音乐ID和当前音乐ID相同直接播放
-          bgAudioManager.play();
-        } else {
-          //否则，获取背景音乐再播放
-          this.playThatMusic();
-        }
-      } else {
-        bgAudioManager.pause();
-      }
+      if (val)
+        bgAudioManager.musicID == this.musicData.id
+          ? bgAudioManager.play()
+          : this.playThatMusic();
+      else bgAudioManager.pause();
     },
   },
   computed: {},
