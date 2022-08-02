@@ -20,11 +20,15 @@
         ></view>
       </view>
     </view>
-    <view class="lyric-box">
-      <view class="item">编曲</view>
-      <view class="item mark">制作人</view>
-      <view class="item">歌词</view>
-      <view class="item">歌词</view>
+    <view class="lyric-box"
+      :style="'--lyricFocus:'+lyricFocus">
+      <view
+        class="item"
+        v-for="(val, index) in thatMusicYric"
+        :key="val.id"
+        :class="index == lyricFocus && 'mark'"
+        >{{ val.value }}
+      </view>
     </view>
     <view class="get-more-lyric">查看更多歌词</view>
     <view class="share-btn">分享给微信好友</view>
@@ -41,6 +45,9 @@ export default {
       recordRotate: 0, //.record的旋转角度
       addRecordRotateInterval: 0, //存放.record动画的定时器
       bgAudioManager: this.$store.state.player.bgAudioManager,
+      thatMusicYric: [],
+      lyricInterval: 0, //存放歌词定时器
+      lyricFocus: 0, //判断选中的歌词
     };
   },
   watch: {
@@ -57,14 +64,52 @@ export default {
 
       //音乐的播放和暂停
       if (val) {
-        if (this.bgAudioManager.musicID !== this.musicData.id) {
+        if (this.bgAudioManager.musicID != this.pageMusicId) {
           this.playThatMusic();
         }
-        this.bgAudioManager.play();//h5调用的是InnerAudioContext，不会自动播放
+        this.bgAudioManager.play(); //h5调用的是InnerAudioContext，不会自动播放
       } else this.bgAudioManager.pause();
+
+      if (val) {
+        clearInterval(this.lyricInterval);
+        this.lyricInterval = setInterval(() => {
+          if(this.bgAudioManager.paused) this.isPlayMusic=false
+          for (let i = 0; i < this.thatMusicYric.length; i++) {
+            if (this.thatMusicYric[i].date >= this.bgAudioManager.currentTime) {
+              this.lyricFocus = i-1;
+              break;
+            }
+          }
+        },500);
+      }else{
+        clearInterval(this.lyricInterval)
+      }
     },
   },
-  computed: {},
+  methods: {
+    lyricDispose(str) {
+      //歌词处理
+      const arr = str.split("\n");
+      for (let i = 0; i < arr.length; i++) {
+        const value = arr[i];
+        arr[i] = {
+          id: value.slice(0, value.indexOf("]") + 1),
+          value: value.slice(value.indexOf("]") + 1),
+        };
+        //时间处理
+        const musicDate = arr[i].id;
+        const min =
+          Number.parseInt(
+            musicDate.slice(musicDate.indexOf("[") + 1, musicDate.indexOf(":"))
+          ) * 60;
+        const s = Number.parseFloat(
+          musicDate.slice(musicDate.indexOf(":") + 1, musicDate.indexOf("]"))
+        );
+        arr[i].date = min + s;
+      }
+      return arr;
+    },
+  },
   props: {
     musicData: {
       //获取当前页面的数据
@@ -77,6 +122,11 @@ export default {
       },
     },
     pageMusicId: "",
+  },
+  created() {
+    this.$api.yric(this.pageMusicId).then((res) => {
+      this.thatMusicYric = this.lyricDispose(res.data.lrc.lyric);
+    });
   },
 };
 </script>
@@ -141,6 +191,9 @@ export default {
     .item {
       height: calc(2.2em);
       opacity: 0.5;
+      &:first-child{
+        margin-top: calc(-2.2em * (var(--lyricFocus) - 1));
+      }
     }
     .item.mark {
       opacity: 1;
