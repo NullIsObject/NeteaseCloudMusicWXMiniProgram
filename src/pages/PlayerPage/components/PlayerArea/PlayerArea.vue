@@ -31,8 +31,10 @@
   </view>
 </template>
 <script>
+import mixin from "../mixin.js";
 export default {
   name: "PlayerArea",
+  mixins: [mixin],
   data() {
     return {
       isPlayMusic: false, //判断动画暂停或播放
@@ -43,6 +45,7 @@ export default {
   watch: {
     isPlayMusic(val) {
       if (val) {
+        //.record的旋转和停止
         this.addRecordRotateInterval = setInterval(() => {
           if (this.recordRotate < 360) this.recordRotate++;
           else this.recordRotate = 0;
@@ -50,9 +53,22 @@ export default {
       } else {
         clearInterval(this.addRecordRotateInterval);
       }
+      const bgAudioManager = uni.getBackgroundAudioManager();
+      if (val) {
+        //音乐的播放和暂停
+        if (bgAudioManager.musicID == this.musicData.id) {
+          //背景音乐ID和当前音乐ID相同直接播放
+          bgAudioManager.play();
+        } else {
+          //否则，获取背景音乐再播放
+          this.playThatMusic();
+        }
+      } else {
+        bgAudioManager.pause();
+      }
     },
   },
-  methods: {},
+  computed: {},
   props: {
     musicData: {
       //获取当前页面的数据
@@ -64,11 +80,8 @@ export default {
         };
       },
     },
-    pageMusicId:''
+    pageMusicId: "",
   },
-  created(){
-    
-  }
 };
 </script>
 <style lang="scss">

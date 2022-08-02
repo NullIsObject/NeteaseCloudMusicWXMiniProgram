@@ -38,24 +38,11 @@ export default {
     };
   },
   methods: {
-    playThatMusic() {
-      //播放当前音乐
-      this.$api.songUrl(this.pageMusicId).then((res) => {
-        const src = res.data.data[0].url;
-        this.$store.dispatch("player/startPlayMusic", {
-          src,
-          title:this.musicData.name,
-          coverImgUrl:this.musicData.al.picUrl,
-          singer:this.musicData.al.name,
-        });
-      });
-    },
   },
   created() {
     //获取音乐数据
     this.$api.songDetail(this.pageMusicId).then((res) => {
       this.musicData = res.data.songs[0];
-      this.playThatMusic()
     });
   },
 };

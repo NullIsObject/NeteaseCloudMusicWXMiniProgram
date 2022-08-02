@@ -25,6 +25,8 @@ export default {
     state: {
         bgAudioManager: uni.getBackgroundAudioManager(),
         playList: [],//播放列表，存放ID
-        playingData: {},//播放中的音乐数据
+        playingData: {//播放中的音乐数据
+            id:''
+        },
     }
 }
