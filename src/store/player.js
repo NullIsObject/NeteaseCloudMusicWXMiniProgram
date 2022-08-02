@@ -15,15 +15,18 @@ export default {
             state.playList.push(...idArr)
         },
         startPlayMusic(state,obj) {//接收一个backgroundAudioManager对象
-            //#ifdef MP-WEIXIN
             for (let key in obj) {
                 state.bgAudioManager[key] = obj[key]
             }
-            //#endif
         }
     },
     state: {
+        //#ifdef MP-WEIXIN
         bgAudioManager: uni.getBackgroundAudioManager(),
+        //#endif
+        //#ifdef H5
+        bgAudioManager: uni.createInnerAudioContext(),
+        //#endif
         playList: [],//播放列表，存放ID
         playingData: {//播放中的音乐数据
             id:''

@@ -40,6 +40,7 @@ export default {
       isPlayMusic: false, //判断动画暂停或播放
       recordRotate: 0, //.record的旋转角度
       addRecordRotateInterval: 0, //存放.record动画的定时器
+      bgAudioManager: this.$store.state.player.bgAudioManager,
     };
   },
   watch: {
@@ -55,12 +56,12 @@ export default {
       }
 
       //音乐的播放和暂停
-      const bgAudioManager = uni.getBackgroundAudioManager();
-      if (val)
-        bgAudioManager.musicID == this.musicData.id
-          ? bgAudioManager.play()
-          : this.playThatMusic();
-      else bgAudioManager.pause();
+      if (val) {
+        if (this.bgAudioManager.musicID !== this.musicData.id) {
+          this.playThatMusic();
+        }
+        this.bgAudioManager.play();//h5调用的是InnerAudioContext，不会自动播放
+      } else this.bgAudioManager.pause();
     },
   },
   computed: {},
