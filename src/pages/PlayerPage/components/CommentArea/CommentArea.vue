@@ -69,7 +69,7 @@ export default {
       .user-comment-box {
         width: 100%;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         .user-comment{
             width: calc(100% - 45px);
             padding-bottom: 20px;
