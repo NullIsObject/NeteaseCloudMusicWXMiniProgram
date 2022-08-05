@@ -45,7 +45,7 @@ export default {
                 })
             } else return Promise((resolve, reject) => {
                 context.commit('startPlayMusic', obj)
-                resolve()//如果commit不出错，反回成功Promise
+                resolve()//如果commit不出错，返回成功Promise
             })
         }
     },

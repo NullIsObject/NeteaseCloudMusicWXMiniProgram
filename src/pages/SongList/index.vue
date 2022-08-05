@@ -1,12 +1,15 @@
 <template>
   <view class="song-list" :style="'--bgcolor:' + bgcolor">
-  <view class="box">
-    <SongListHeader />
-    <scroll-view class="main" scroll-y="true" @scrolltolower="loadMore">
-      <SongListCover :pageData="pageData"></SongListCover>
-      <SongListMain :musicList="musicList" :musicListLength="musicListLength"></SongListMain>
-    </scroll-view>
-  </view>
+    <view class="box">
+      <SongListHeader />
+      <scroll-view class="main" scroll-y="true" @scrolltolower="loadMore">
+        <SongListCover :pageData="pageData"></SongListCover>
+        <SongListMain
+          :musicList="musicList"
+          :allMusicList="musicListData"
+        ></SongListMain>
+      </scroll-view>
+    </view>
   </view>
 </template>
 
@@ -48,10 +51,10 @@ export default {
       this.bgcolor = `url("${this.pageData.coverImgUrl}")`;
     },
   },
-  computed:{
-    musicListLength(){
-      return this.musicListData.length
-    }
+  computed: {
+    musicListLength() {
+      return this.musicListData.length;
+    },
   },
   watch: {
     musicListData(val) {
@@ -78,7 +81,7 @@ export default {
   height: 100vh;
   background: var(--bgcolor);
   background-position: center top;
-  .box{
+  .box {
     width: 100%;
     height: 100%;
     backdrop-filter: blur(30px);

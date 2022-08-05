@@ -77,11 +77,28 @@ export function yric(id) {//传入音乐id获取歌词
     })
 }
 
-export function simiSong(id) {
+export function simiSong(id) {//获取相似歌曲
     return request({
         url: "/simi/song",
         data: {
             id
+        }
+    })
+}
+
+export function commentHot({//获取热门评论
+    id,
+    type=0,
+    limit=20,
+    offset=0
+}) {
+    return request({
+        url: "/comment/hot",
+        data: {
+            id,
+            type,
+            limit,
+            offset
         }
     })
 }

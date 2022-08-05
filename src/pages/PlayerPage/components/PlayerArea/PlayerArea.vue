@@ -69,9 +69,9 @@ export default {
         //歌词的播放与暂停
         clearInterval(this.lyricInterval);
         this.lyricInterval = setInterval(() => {
-          if (this.bgAudioManager.paused) this.isPlayMusic = false;
+          if (this.$bgAudioManager.paused) this.isPlayMusic = false;
           for (let i = 0; i < this.thatMusicYric.length; i++) {
-            if (this.thatMusicYric[i].date >= this.bgAudioManager.currentTime) {
+            if (this.thatMusicYric[i].date >= this.$bgAudioManager.currentTime) {
               this.lyricFocus = i - 1;
               break;
             }
@@ -120,12 +120,12 @@ export default {
               this.isPlayMusic = true;
             });
         } else {
-          this.bgAudioManager.play();
+          this.$bgAudioManager.play();
           this.isPlayMusic = true;
         }
       } else {
         //停止当前页面对应的音乐
-        this.bgAudioManager.pause();
+        this.$bgAudioManager.pause();
         this.isPlayMusic = false;
       }
     },
@@ -214,6 +214,7 @@ export default {
       opacity: 0.5;
       &:first-child {
         margin-top: calc(-2.2em * max((var(--lyricFocus) - 1), 0));
+        transition: .5s;
       }
     }
     .item.mark {

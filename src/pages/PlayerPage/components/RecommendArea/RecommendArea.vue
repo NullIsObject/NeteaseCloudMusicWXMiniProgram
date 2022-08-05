@@ -65,9 +65,9 @@ export default {
     },
     playThatMusic(obj) {
       //播放点击的歌曲
-      if (this.bgAudioManager.musicID == obj.id) {
-        if (!this.bgAudioManager.paused) this.bgAudioManager.pause();
-        else this.bgAudioManager.play();
+      if (this.$bgAudioManager.musicID == obj.id) {
+        if (!this.$bgAudioManager.paused) this.$bgAudioManager.pause();
+        else this.$bgAudioManager.play();
         return 0;
       }
       this.$store.dispatch("player/startPlayMusic", {
