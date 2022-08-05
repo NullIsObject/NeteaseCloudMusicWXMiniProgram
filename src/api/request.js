@@ -14,18 +14,31 @@ export function request({//设置默认值
             headers,
             timeout,
             success(res){
-                if(res.data.data&&res.data.data.code==-460){
+                if(res.data&&res.data.code==-460){
                     uni.showToast({
                         title: '标题',
                         duration: 2000
                     });
-                    console.log(460)
+                    uni.showToast({
+                        title:"数据加载失败",
+                        icon:"error"
+                    })
                     reject(res)
                 }else{
                     resolve(res)
                 }
             },
-            fail: reject
+            fail(err){
+                console.log({
+                    type:"错误",
+                    error:err
+                })
+                uni.showToast({
+                    title:"数据加载失败",
+                    icon:"error"
+                })
+                reject(err)
+            }
         })
     })
 }

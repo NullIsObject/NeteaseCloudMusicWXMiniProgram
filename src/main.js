@@ -13,6 +13,10 @@ Vue.component("AppHeader", AppHeader)
 
 const app = new Vue({
   ...App,
-  store
+  store,
+  created() {
+    Vue.prototype.bgAudioManager = this.$store.state.player.bgAudioManager
+    this.$store.state.player.main()
+  }
 })
 app.$mount()

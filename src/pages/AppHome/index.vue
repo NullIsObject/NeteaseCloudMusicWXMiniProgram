@@ -11,7 +11,6 @@ import HomeHeader from "./components/HomeHeader";
 import HomeTypeList from "./components/HomeTypeList";
 import HomeSearch from "./components/HomeSearch";
 import { mapState } from "vuex";
-
 export default {
   components: {
     HomeHeader,

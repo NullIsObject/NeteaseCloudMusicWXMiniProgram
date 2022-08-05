@@ -1,5 +1,5 @@
 <template>
-  <view class="search-result-list">
+  <view class="search-result-list" @click="openThatMusic(searchResultData.id)">
     <view class="box">
       <view
         class="music-name"
@@ -53,6 +53,11 @@ export default {
       res = arr.join("");
       return res;
     },
+    openThatMusic(id){
+      uni.navigateTo({
+        url:`/pages/PlayerPage/index?id=${id}`
+      })
+    }
   },
 };
 </script>

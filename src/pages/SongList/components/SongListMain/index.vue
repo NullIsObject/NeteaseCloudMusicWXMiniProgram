@@ -7,7 +7,7 @@
     </view>
     <view class="ol">
       <block v-for="(val,index) in musicList" :key="val.id">
-        <view class="li">
+        <view class="li" @click="openThatMusic(val.id)">
           <view class="serial-number">{{index+1}}</view>
           <view class="music-data">
             <view class="music-name">{{val.name}}</view>
@@ -22,7 +22,14 @@
 <script>
 export default {
   name: "SongListMain",
-  props: ["musicList","musicListLength"]
+  props: ["musicList","musicListLength"],
+  methods:{
+    openThatMusic(id){
+      uni.navigateTo({
+        url:`/pages/PlayerPage/index?id=${id}`
+      })
+    }
+  }
 };
 </script>
 <style lang="scss">

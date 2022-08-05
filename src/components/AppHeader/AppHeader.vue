@@ -72,11 +72,11 @@ export default {
 .app-header {
   height: $wx-header-height;
   position: relative;
-  background: linear-gradient(
-    0,
-    rgba(255, 255, 255, 0) 50%,
-    rgba(255, 255, 255, 0.4)
-  );
+  // background: linear-gradient(
+  //   0,
+  //   rgba(255, 255, 255, 0) 50%,
+  //   rgba(255, 255, 255, 0.4)
+  // );
   --capsule-width: 100px;
   --capsule-height: 25px;
   --capsule-top: 35px;

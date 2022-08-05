@@ -20,12 +20,11 @@
         ></view>
       </view>
     </view>
-    <view class="lyric-box"
-      :style="'--lyricFocus:'+lyricFocus">
+    <view class="lyric-box" :style="'--lyricFocus:' + lyricFocus">
       <view
         class="item"
         v-for="(val, index) in thatMusicYric"
-        :key="val.id"
+        :key="val.id+val.value"
         :class="index == lyricFocus && 'mark'"
         >{{ val.value }}
       </view>
@@ -35,22 +34,26 @@
   </view>
 </template>
 <script>
-import mixin from "../mixin.js";
+import { mapState } from "vuex";
 export default {
   name: "PlayerArea",
-  mixins: [mixin],
   data() {
     return {
-      isPlayMusic: false, //判断动画暂停或播放
+      isPlayMusic: false, //判断音乐暂停或播放
       recordRotate: 0, //.record的旋转角度
       addRecordRotateInterval: 0, //存放.record动画的定时器
-      bgAudioManager: this.$store.state.player.bgAudioManager,
       thatMusicYric: [],
       lyricInterval: 0, //存放歌词定时器
       lyricFocus: 0, //判断选中的歌词
     };
   },
+  computed: {
+    ...mapState("player", ["playingMusicId"]),
+  },
   watch: {
+    playingMusicId(val) {
+      if (val != this.pageMusicId) this.isPlayMusic = false;
+    },
     isPlayMusic(val) {
       if (val) {
         //.record的旋转和停止
@@ -65,24 +68,23 @@ export default {
       //音乐的播放和暂停
       if (val) {
         if (this.bgAudioManager.musicID != this.pageMusicId) {
-          this.playThatMusic();
+          this.playThatMusic(this.pageMusicId);
         }
-        this.bgAudioManager.play(); //h5调用的是InnerAudioContext，不会自动播放
-      } else this.bgAudioManager.pause();
+      } else if(this.playingMusicId==this.pageMusicId) this.bgAudioManager.pause();
 
       if (val) {
         clearInterval(this.lyricInterval);
         this.lyricInterval = setInterval(() => {
-          if(this.bgAudioManager.paused) this.isPlayMusic=false
+          if (this.bgAudioManager.paused) this.isPlayMusic = false;
           for (let i = 0; i < this.thatMusicYric.length; i++) {
             if (this.thatMusicYric[i].date >= this.bgAudioManager.currentTime) {
-              this.lyricFocus = i-1;
+              this.lyricFocus = i - 1;
               break;
             }
           }
-        },500);
-      }else{
-        clearInterval(this.lyricInterval)
+        }, 500);
+      } else {
+        clearInterval(this.lyricInterval);
       }
     },
   },
@@ -109,6 +111,15 @@ export default {
       }
       return arr;
     },
+    playThatMusic(id) {
+      //播放当前音乐
+      this.$store.dispatch("player/startPlayMusic", {
+        musicID: this.musicData.id,
+        title: this.musicData.name,
+        coverImgUrl: this.musicData.al.picUrl,
+        singer: this.musicData.al.name,
+      });
+    },
   },
   props: {
     musicData: {
@@ -127,6 +138,9 @@ export default {
     this.$api.yric(this.pageMusicId).then((res) => {
       this.thatMusicYric = this.lyricDispose(res.data.lrc.lyric);
     });
+    if (this.bgAudioManager.musicID == this.pageMusicId) {
+      this.isPlayMusic = true;
+    }
   },
 };
 </script>
@@ -191,8 +205,8 @@ export default {
     .item {
       height: calc(2.2em);
       opacity: 0.5;
-      &:first-child{
-        margin-top: calc(-2.2em * (var(--lyricFocus) - 1));
+      &:first-child {
+        margin-top: calc(-2.2em * max((var(--lyricFocus) - 1), 0));
       }
     }
     .item.mark {

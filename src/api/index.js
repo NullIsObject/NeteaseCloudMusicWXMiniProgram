@@ -76,3 +76,12 @@ export function yric(id) {//传入音乐id获取歌词
         }
     })
 }
+
+export function simiSong(id) {
+    return request({
+        url: "/simi/song",
+        data: {
+            id
+        }
+    })
+}

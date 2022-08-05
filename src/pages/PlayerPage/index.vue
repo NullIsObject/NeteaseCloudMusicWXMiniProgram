@@ -1,20 +1,23 @@
 <template>
-  <view
-    class="player-page"
-    :style="'background-image: url(' + musicData.al.picUrl + ')'"
-  >
-    <view class="box">
-      <AppHeader :isShowBtnBox="true" class="header">
-        {{ musicData.name }}
-      </AppHeader>
-      <scroll-view class="scroll-box" scroll-y="true">
-        <view class="main">
-          <PlayerArea :musicData="musicData" :pageMusicId="pageMusicId" />
-          <RecommendArea :pageMusicId="pageMusicId" />
-          <CommentArea :pageMusicId="pageMusicId" />
-          <view class="download-app"> 下载云音乐查看跟多精彩内容 </view>
-        </view>
-      </scroll-view>
+  <view class="body">
+    <view
+      class="player-page"
+      :style="'background-image: url(' + musicData.al.picUrl + ')'"
+      v-if="isLoadData"
+    >
+      <view class="box">
+        <AppHeader :isShowBtnBox="true" class="header">
+          {{ musicData.name }}
+        </AppHeader>
+        <scroll-view class="scroll-box" scroll-y="true">
+          <view class="main">
+            <PlayerArea :musicData="musicData" :pageMusicId="pageMusicId" />
+            <RecommendArea :pageMusicId="pageMusicId" />
+            <CommentArea :pageMusicId="pageMusicId" />
+            <view class="download-app"> 下载云音乐查看跟多精彩内容 </view>
+          </view>
+        </scroll-view>
+      </view>
     </view>
   </view>
 </template>
@@ -27,22 +30,24 @@ export default {
   components: { PlayerArea, RecommendArea, CommentArea },
   data() {
     return {
-      pageMusicId: "347230",
+      pageMusicId: "",
       musicData: {
-        name:'',
+        name: "",
         al: {
-          picUrl: '',
-          name:''
+          picUrl: "",
+          name: "",
         },
       },
+      isLoadData:false,//判断数据是否加载完成
     };
   },
-  methods: {
-  },
-  created() {
+  methods: {},
+  onLoad({ id }) {
+    this.pageMusicId = id;
     //获取音乐数据
     this.$api.songDetail(this.pageMusicId).then((res) => {
       this.musicData = res.data.songs[0];
+      this.isLoadData=true
     });
   },
 };

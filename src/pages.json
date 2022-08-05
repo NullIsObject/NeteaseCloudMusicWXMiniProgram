@@ -1,9 +1,6 @@
 {
 	"pages": [
 		{
-			"path":"pages/PlayerPage/index"
-		},
-		{
 			"path": "pages/AppHome/index",
 			"style": {
 				"navigationBarTextStyle": "black"
@@ -13,14 +10,17 @@
 			"path": "pages/SearchPage/index",
 			"style": {
 				"navigationBarTextStyle": "black",
-				"onReachBottomDistance":500
+				"onReachBottomDistance": 500
 			}
 		},
 		{
 			"path": "pages/SongList/index"
 		},
 		{
-			"path":"pages/SongList/SongListIntroduce"
+			"path": "pages/SongList/SongListIntroduce"
+		},
+		{
+			"path": "pages/PlayerPage/index"
 		}
 	],
 	"globalStyle": {
