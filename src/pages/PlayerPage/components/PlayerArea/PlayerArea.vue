@@ -16,7 +16,7 @@
         <view
           class="btn iconfont icon-play-that"
           :class="isPlayMusic ? 'icon-stop' : 'icon-play-that'"
-          @click="isPlayMusic = !isPlayMusic"
+          @click="playOrStopThatMusic"
         ></view>
       </view>
     </view>
@@ -24,7 +24,7 @@
       <view
         class="item"
         v-for="(val, index) in thatMusicYric"
-        :key="val.id+val.value"
+        :key="val.id + val.value"
         :class="index == lyricFocus && 'mark'"
         >{{ val.value }}
       </view>
@@ -52,7 +52,7 @@ export default {
   },
   watch: {
     playingMusicId(val) {
-      if (val != this.pageMusicId) this.isPlayMusic = false;
+      this.isPlayMusic = (val == this.pageMusicId);
     },
     isPlayMusic(val) {
       if (val) {
@@ -65,14 +65,8 @@ export default {
         clearInterval(this.addRecordRotateInterval);
       }
 
-      //音乐的播放和暂停
       if (val) {
-        if (this.bgAudioManager.musicID != this.pageMusicId) {
-          this.playThatMusic(this.pageMusicId);
-        }
-      } else if(this.playingMusicId==this.pageMusicId) this.bgAudioManager.pause();
-
-      if (val) {
+        //歌词的播放与暂停
         clearInterval(this.lyricInterval);
         this.lyricInterval = setInterval(() => {
           if (this.bgAudioManager.paused) this.isPlayMusic = false;
@@ -111,14 +105,29 @@ export default {
       }
       return arr;
     },
-    playThatMusic(id) {
-      //播放当前音乐
-      this.$store.dispatch("player/startPlayMusic", {
-        musicID: this.musicData.id,
-        title: this.musicData.name,
-        coverImgUrl: this.musicData.al.picUrl,
-        singer: this.musicData.al.name,
-      });
+    playOrStopThatMusic() {
+      //播放当前页面对应的音乐
+      if (!this.isPlayMusic) {
+        if (this.playingMusicId != this.pageMusicId) {
+          this.$store
+            .dispatch("player/startPlayMusic", {
+              musicID: this.musicData.id,
+              title: this.musicData.name,
+              coverImgUrl: this.musicData.al.picUrl,
+              singer: this.musicData.al.name,
+            })
+            .then(() => {
+              this.isPlayMusic = true;
+            });
+        } else {
+          this.bgAudioManager.play();
+          this.isPlayMusic = true;
+        }
+      } else {
+        //停止当前页面对应的音乐
+        this.bgAudioManager.pause();
+        this.isPlayMusic = false;
+      }
     },
   },
   props: {
@@ -138,9 +147,7 @@ export default {
     this.$api.yric(this.pageMusicId).then((res) => {
       this.thatMusicYric = this.lyricDispose(res.data.lrc.lyric);
     });
-    if (this.bgAudioManager.musicID == this.pageMusicId) {
-      this.isPlayMusic = true;
-    }
+    this.isPlayMusic = (this.playingMusicId == this.pageMusicId);
   },
 };
 </script>
