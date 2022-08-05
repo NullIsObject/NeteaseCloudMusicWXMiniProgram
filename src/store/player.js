@@ -3,7 +3,7 @@ import { songUrl } from "@/api"
 export default {
     namespaced: true,
     actions: {
-        main(context) {//播放器初始化，在main.js调用，不要在其他地方调用
+        main(context) {//播放器初始化，在main.js调用
             const state = context.state
             state.bgAudioManager.onPlay(() => {
                 state.isPlayingMusic = true
@@ -26,10 +26,11 @@ export default {
             })
         },
         updateMusicFromPlayList(context, musicLists) {//更新播放列表，接收存放音乐数据的数组，不用包含播放路径
-            context.dispatch('startPlayMusic', musicLists[0])
-            musicLists.shift()
-            context.state = []
-            context.commit('addMusicFromPlayList', musicLists)
+            context.dispatch('startPlayMusic', musicLists[0]).then(() => {
+                musicLists.shift()
+                context.state = []
+                context.commit('addMusicFromPlayList', musicLists)
+            })
         },
         startPlayMusic(context, obj) {//发送请求获取音乐连接，同时播放音乐，统一在这里请求播放连接
             if (!obj.musicID) throw "请传入musicID"
