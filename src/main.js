@@ -16,7 +16,7 @@ const app = new Vue({
   store,
   created() {
     Vue.prototype.bgAudioManager = this.$store.state.player.bgAudioManager
-    this.$store.state.player.main()
+    this.$store.dispatch('player/main');
   }
 })
 app.$mount()

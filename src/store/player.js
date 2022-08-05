@@ -1,62 +1,58 @@
-//播放器数据
+//播放器数据（这里做整个app的播放器）
 import { songUrl } from "@/api"
 export default {
     namespaced: true,
     actions: {
-        main() {//在main.js调用
-            this.bgAudioManager.playbackRate = 2
-            this.bgAudioManager.onPlay(() => {
-                this.isPlayingMusic = true
-                this.playingMusicId = this.bgAudioManager.musicID
+        main(context) {//播放器初始化，在main.js调用，不要在其他地方调用
+            const state = context.state
+            state.bgAudioManager.onPlay(() => {
+                state.isPlayingMusic = true
+                state.playingMusicId = state.bgAudioManager.musicID
             })
-            this.bgAudioManager.onPause(() => {
-                this.isPlayingMusic = false
+            state.bgAudioManager.onPause(() => {
+                state.isPlayingMusic = false
             })
-            this.bgAudioManager.onStop(() => {
-                this.isPlayingMusic = false
+            state.bgAudioManager.onStop(() => {
+                state.isPlayingMusic = false
             })
-            this.bgAudioManager.onEnded(() => {
-                this.isPlayingMusic = false
-                if (this.playList.length) {
-                    songUrl(this.playList[0].musicID).then(res => {
-                        const data = res.data.data[0]
-                        this.bgAudioManager.musicID = data.id
-                        this.bgAudioManager.src = data.url
-                        this.bgAudioManager.singer = this.playList[0].singer
-                        this.bgAudioManager.title = this.playList[0].title
-                        this.bgAudioManager.coverImgUrl = this.playList[0].coverImgUrl
-                    }).then(() => {
-                        this.bgAudioManager.play()
-                        this.playList.shift()
+            state.bgAudioManager.onEnded(() => {
+                state.isPlayingMusic = false
+                if (state.playList.length) {//播放结束时，判断播放列表是否有歌曲
+                    context.dispatch('startPlayMusic', state.playList[0]).then(res => {
+                        //播放成功，在播放列表中清除已播放音乐数据
+                        state.playList.shift()
                     })
                 }
             })
         },
-        updateMusicFromPlayList(context, musicLists) {//接收存放音乐数据的数组，不用包含播放路径
+        updateMusicFromPlayList(context, musicLists) {//更新播放列表，接收存放音乐数据的数组，不用包含播放路径
             context.dispatch('startPlayMusic', musicLists[0])
             musicLists.shift()
             context.state = []
             context.commit('addMusicFromPlayList', musicLists)
         },
-        startPlayMusic(context, obj) {
+        startPlayMusic(context, obj) {//发送请求获取音乐连接，同时播放音乐，统一在这里请求播放连接
             if (!obj.musicID) throw "请传入musicID"
             obj.title = obj.title || '未获取标题'
             obj.singer = obj.singer || '暂无'
             obj.coverImgUrl = obj.coverImgUrl || ''
             if (!obj.src) {
-                songUrl(obj.musicID).then(res => {
+                return songUrl(obj.musicID).then(res => {
                     obj.src = res.data.data[0].url
                     context.commit('startPlayMusic', obj)
+                    return res
                 })
-            } else
+            } else return Promise((resolve, reject) => {
                 context.commit('startPlayMusic', obj)
+                resolve()//如果commit不出错，反回成功Promise
+            })
         }
     },
     mutations: {
         addMusicFromPlayList(state, musicLists) {//接收存放音乐数据的数组
             state.playList.push(...musicLists)
         },
-        startPlayMusic(state, obj) {//接收一个backgroundAudioManager对象
+        startPlayMusic(state, obj) {//播放音乐，统一在这里进行播放，接收一个backgroundAudioManager对象
             for (let key in obj) {
                 state.bgAudioManager[key] = obj[key]
             }
