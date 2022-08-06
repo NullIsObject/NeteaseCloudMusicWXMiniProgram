@@ -26,6 +26,7 @@ export default {
             })
         },
         updateMusicFromPlayList(context, musicLists) {//更新播放列表，接收存放音乐数据的数组，不用包含播放路径
+            musicLists=JSON.parse(JSON.stringify(musicLists))//深拷贝，避免与原数据互相影响
             context.dispatch('startPlayMusic', musicLists[0]).then(() => {
                 musicLists.shift()
                 context.state = []
