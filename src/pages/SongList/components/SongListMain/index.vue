@@ -69,7 +69,13 @@ export default {
         musicDataArr.push({
           musicID: val.id,
           title: val.name,
-          singer: val.ar[0].name,
+          singer: (()=>{
+            let str=""
+            val.ar.forEach(val => {
+              str+=val.name
+            });
+            return str
+          }),
           coverImgUrl: val.al.picUrl,
         });
       });

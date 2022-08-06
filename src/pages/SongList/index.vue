@@ -71,6 +71,13 @@ export default {
       this.getBgColor();
     });
   },
+  onShareAppMessage() {
+    return {
+      title: "分享歌单："+this.pageData.name,
+      path: "/pages/SongList/index?id=" + this.pageData.id,
+      imageUrl: this.pageData.coverImgUrl
+    };
+  },
 };
 </script>
 

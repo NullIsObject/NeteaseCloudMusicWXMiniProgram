@@ -34,11 +34,10 @@
       </view>
     </view>
     <view class="get-more-lyric" @click="showMoreLyric">查看更多歌词</view>
-    <view class="share-btn">分享给微信好友</view>
-    <MoreLyric
-      :thatMusicYric="thatMusicYric"
-      :lyricFocus="lyricFocus"
-    />
+    <button open-type="share" plain="true" @click="shareToWX" class="share-btn">
+      分享给微信好友
+    </button>
+    <MoreLyric :thatMusicYric="thatMusicYric" :lyricFocus="lyricFocus" />
   </view>
 </template>
 <script>
@@ -143,9 +142,18 @@ export default {
       //兼容小程序
       return a + b;
     },
-    showMoreLyric(){
-      uni.$emit("showMoreLyric")
-    }
+    showMoreLyric() {
+      uni.$emit("showMoreLyric");
+    },
+    shareToWX() {
+      //#ifdef H5
+      uni.showToast({
+        title: "功能未开放",
+        icon: "error",
+      });
+      //#endif
+      return 0;
+    },
   },
   props: {
     musicData: {
@@ -255,6 +263,7 @@ export default {
     width: 10em;
     height: 2.2em;
     border-radius: 2.2em;
+    color: white;
   }
 }
 </style>

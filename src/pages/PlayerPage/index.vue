@@ -69,6 +69,14 @@ export default {
     scrolltolower() {
       this.addComment();
     },
+    getAllsinger(arr) {
+      //遍历出一个数组所有歌手
+      let str = "";
+      arr.forEach((val) => {
+        str += val.name + " ";
+      });
+      return str;
+    },
   },
   watch: {
     commentData: {
@@ -85,6 +93,13 @@ export default {
       this.musicData = res.data.songs[0];
       this.isLoadData = true;
     });
+  },
+  onShareAppMessage() {
+    return {
+      title: this.musicData.name + "-" + this.getAllsinger(this.musicData.ar),
+      path: "/pages/PlayerPage/index?id=" + this.musicData.id,
+      imageUrl: this.musicData.al.picUrl,
+    };
   },
 };
 </script>

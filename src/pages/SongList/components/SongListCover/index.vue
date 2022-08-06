@@ -28,10 +28,10 @@
       </view>
     </view>
     <view class="share-btn-box">
-      <view class="share-btn">
+      <button class="share-btn" open-type="share" @click="shareToWX">
         <text class="tag-text iconfont icon-share"></text>
         分享给微信好友
-      </view>
+      </button>
     </view>
   </view>
 </template>
@@ -73,6 +73,7 @@ export default {
       query
         .select(".description-text")
         .boundingClientRect((data) => {
+          //字体大小为12px，计算第一行可容纳文字数量，将其余放到第二行
           that.descriptionTop = that.pageData.description.slice(
             0,
             parseInt(data.width / 12)
@@ -82,6 +83,15 @@ export default {
           );
         })
         .exec();
+    },
+    shareToWX() {
+      //#ifdef H5
+      uni.showToast({
+        title: "功能未开放",
+        icon: "error",
+      });
+      //#endif
+      return 0;
     },
   },
   filters: {
@@ -109,7 +119,7 @@ export default {
   },
   mounted() {
     that.isExemounted = true;
-  },
+  }
 };
 </script>
 <style lang="scss">
@@ -217,6 +227,11 @@ export default {
       width: 50%;
       height: 65rpx;
       border-radius: 65rpx;
+      font-size: 15px;
+      color: white;
+      &::after{
+        border-width: 0;
+      }
 
       .iconfont {
         font-size: 1em;
