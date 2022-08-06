@@ -23,7 +23,7 @@ export default {
         clearSearchResult(context) {//清空搜索结果
             context.commit('updateSearchResult', [])
         },
-        getSearchInputValue(context, value) {//获取搜索框的值
+        getSearchInputValue(context, value) {//获取一个值并设置成搜索框的值
             context.commit('setSearchInputValue', value)
         }
     },

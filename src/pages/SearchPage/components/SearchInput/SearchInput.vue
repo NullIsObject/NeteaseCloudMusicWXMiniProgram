@@ -16,10 +16,16 @@
       v-show="searchValue"
       @click="removeInput"
     ></view>
+    <!-- 搜索提示↓ -->
     <view class="input-hint" v-show="isShowInputHint && searchValue">
       <view class="hint-title">搜索“{{ searchValue }}”</view>
       <view class="ul">
-        <view class="li" v-for="(val, index) in searchSuggest" :key="index">
+        <view
+          class="li"
+          v-for="(val, index) in searchSuggest"
+          :key="index"
+          @click="$store.dispatch('search/getSearchInputValue', val.keyword)"
+        >
           <text class="iconfont icon-search" />
           <text>{{ val.keyword }}</text>
         </view>
