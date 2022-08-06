@@ -11,7 +11,11 @@
           :style="'transform:rotate(' + recordRotate + 'deg'"
         >
           <image class="tag-image" mode="widthFix" src="@/static/record.png" />
-          <image mode="widthFIx" :src="musicData.al.picUrl" class="bg-img tag-image" />
+          <image
+            mode="widthFIx"
+            :src="musicData.al.picUrl"
+            class="bg-img tag-image"
+          />
         </view>
         <view
           class="btn iconfont icon-play-that"
@@ -29,21 +33,26 @@
         >{{ val.value }}
       </view>
     </view>
-    <view class="get-more-lyric">查看更多歌词</view>
+    <view class="get-more-lyric" @click="showMoreLyric">查看更多歌词</view>
     <view class="share-btn">分享给微信好友</view>
+    <MoreLyric
+      :thatMusicYric="thatMusicYric"
+      :lyricFocus="lyricFocus"
+    />
   </view>
 </template>
 <script>
 import { mapState } from "vuex";
+import MoreLyric from "./MoreLyric.vue";
 export default {
   name: "PlayerArea",
   data() {
     return {
-      isPlayMusic: false, //判断音乐暂停或播放
-      recordRotate: 0, //.record的旋转角度
-      addRecordRotateInterval: 0, //存放.record动画的定时器
+      isPlayMusic: false,
+      recordRotate: 0,
+      addRecordRotateInterval: 0,
       thatMusicYric: [],
-      lyricInterval: 0, //存放歌词定时器
+      lyricInterval: 0,
       lyricFocus: 0, //判断选中的歌词
     };
   },
@@ -64,7 +73,6 @@ export default {
       } else {
         clearInterval(this.addRecordRotateInterval);
       }
-
       if (val) {
         //歌词的播放与暂停
         clearInterval(this.lyricInterval);
@@ -135,6 +143,9 @@ export default {
       //兼容小程序
       return a + b;
     },
+    showMoreLyric(){
+      uni.$emit("showMoreLyric")
+    }
   },
   props: {
     musicData: {
@@ -155,6 +166,7 @@ export default {
     });
     this.isPlayMusic = this.playingMusicId == this.pageMusicId;
   },
+  components: { MoreLyric },
 };
 </script>
 <style lang="scss">
