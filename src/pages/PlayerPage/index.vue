@@ -9,12 +9,19 @@
         <AppHeader :isShowBtnBox="true" class="header">
           {{ musicData.name }}
         </AppHeader>
-        <scroll-view class="scroll-box" scroll-y="true">
+        <scroll-view
+          class="scroll-box"
+          scroll-y="true"
+          lower-threshold="1000"
+          @scrolltolower="scrolltolower"
+        >
           <view class="main">
             <PlayerArea :musicData="musicData" :pageMusicId="pageMusicId" />
             <RecommendArea :pageMusicId="pageMusicId" />
-            <CommentArea :pageMusicId="pageMusicId" />
-            <view class="download-app"> 下载云音乐查看跟多精彩内容 </view>
+            <CommentArea
+              :commentData="commentData"
+              :hasMoreComment="hasMoreComment"
+            />
           </view>
         </scroll-view>
       </view>
@@ -38,16 +45,45 @@ export default {
           name: "",
         },
       },
-      isLoadData:false,//判断数据是否加载完成
+      isLoadData: false, //判断数据是否加载完成
+      commentNumberOfPages: 1,
+      commentData: [],
+      hasMoreComment: true,
     };
   },
-  methods: {},
+  methods: {
+    addComment() {
+      if (!this.hasMoreComment) return 0;
+      this.$api
+        .commentHot({
+          id: this.pageMusicId,
+          tpe: 0,
+          limit: 20,
+          offset: (this.commentNumberOfPages - 1) * 20,
+        })
+        .then((res) => {
+          this.commentData.push(...res.data.hotComments);
+          this.hasMoreComment = res.data.hasMore;
+        });
+    },
+    scrolltolower() {
+      this.addComment();
+    },
+  },
+  watch: {
+    commentData: {
+      deep: true,
+      handler(val) {
+        this.commentNumberOfPages++;
+      },
+    },
+  },
   onLoad({ id }) {
     this.pageMusicId = id;
     //获取音乐数据
     this.$api.songDetail(this.pageMusicId).then((res) => {
       this.musicData = res.data.songs[0];
-      this.isLoadData=true
+      this.isLoadData = true;
     });
   },
 };
@@ -69,16 +105,6 @@ export default {
     .main {
       width: $body-width;
       margin: auto;
-    }
-    .download-app {
-      color: white;
-      background-color: rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 2.5em;
-      border-radius: 2.5em;
-      margin-top: 20px;
     }
   }
 }

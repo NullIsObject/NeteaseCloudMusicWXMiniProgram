@@ -2,28 +2,42 @@
   <view class="comment-area">
     <view class="title">精彩评论</view>
     <view class="user-box">
-      <view class="item">
-        <view class="user-head">头像</view>
+      <view class="item" v-for="val in commentData" :key="val.commentID">
+        <image class="user-head" :src="val.user.avatarUrl" mode="widthFix" />
         <view class="user-data">
           <view class="user-name-time">
-            <text class="user-name">用户名</text>
-            <text class="user-time">昨天00:00</text>
+            <text class="user-name">{{ val.user.nickname }}</text>
+            <text class="user-time">{{ val.time | commentDate }}</text>
           </view>
           <view class="user-good">
-            111
+            {{ val.likedCount }}
             <text class="iconfont icon-good"></text>
           </view>
         </view>
         <view class="user-comment-box">
-          <view class="user-comment">评论内容</view>
+          <view class="user-comment">{{ val.content }}</view>
         </view>
       </view>
     </view>
+    <view class="loading" v-if="hasMoreComment">
+      <AppLoading />
+    </view>
+    <view class="notHasMoreComment" v-if="!hasMoreComment">没有更多评论了</view>
   </view>
 </template>
 <script>
 export default {
   name: "CommentArea",
+  props: ["commentData","hasMoreComment"],
+  filters: {
+    commentDate(val) {
+      const date = new Date(val);
+      const year = date.getFullYear();
+      const month = date.getMonth()+1;
+      const day = date.getDay();
+      return year + "年" + month + "月" + day + "日";
+    },
+  },
 };
 </script>
 <style lang="scss">
@@ -40,10 +54,10 @@ export default {
     .item {
       display: flex;
       flex-wrap: wrap;
+      padding-top: 10px;
       .user-head {
         width: 35px;
         height: 35px;
-        background-color: yellow;
         border-radius: 50%;
         margin-right: 10px;
       }
@@ -70,13 +84,24 @@ export default {
         width: 100%;
         display: flex;
         justify-content: flex-end;
-        .user-comment{
-            width: calc(100% - 45px);
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,.2);
+        .user-comment {
+          width: calc(100% - 45px);
+          padding-bottom: 20px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
       }
     }
+  }
+  .loading {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .notHasMoreComment {
+    text-align: center;
+    height: 100px;
+    line-height: 100px;
   }
 }
 </style>

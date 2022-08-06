@@ -1,5 +1,5 @@
 <template>
-  <view class="app-loading">
+  <view class="app-loading" :style="'--size:'+size">
     <view class="ul">
       <view class="li"></view>
       <view class="li"></view>
@@ -11,12 +11,16 @@
 <script>
 export default {
   name: "AppLoading",
+  props:{
+    size:{//loading图标大小
+      default:"20px"
+    }
+  }
 };
 </script>
 <style lang="scss">
 .app-loading {
   .ul {
-    --size: 20px;
     margin: auto;
     width: var(--size);
     height: var(--size);
