@@ -2,7 +2,7 @@
   <view class="app-header" :style="capsuleStyle">
     <view class="btn-box" v-if="isShowBtnBox">
       <view class="go-back iconfont icon-go-back" @click="goBack"></view>
-      <text>|</text>
+      <text class="tag-text">|</text>
       <view class="go-home iconfont icon-home" @click="goHome"></view>
     </view>
     <view class="title">
@@ -95,7 +95,7 @@ export default {
     right: calc(100vw - var(--capsule-width) - 20rpx);
     z-index: 1;
 
-    view {
+    .iconfont {
       width: 50%;
       height: 100%;
       display: flex;
@@ -104,7 +104,7 @@ export default {
       font-size: calc(var(--capsule-height) / 1.5);
     }
 
-    text {
+    .tag-text {
       font-size: calc(var(--capsule-height) / 2);
       line-height: var(--capsule-height);
       font-weight: lighter;

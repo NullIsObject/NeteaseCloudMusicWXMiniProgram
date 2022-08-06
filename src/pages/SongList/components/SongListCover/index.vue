@@ -1,23 +1,23 @@
 <template>
   <view class="song-list-cover">
     <view class="left">
-      <image :src="pageData.coverImgUrl" />
-      <text class="iconfont icon-amount-of-play">{{
+      <image class="tag-image" :src="pageData.coverImgUrl" />
+      <text class="tag-text iconfont icon-amount-of-play">{{
         pageData.playCount | numFilter
       }}</text>
     </view>
     <view class="right">
       <view class="title">{{ pageData.name }}</view>
       <view class="logo">
-        <image src="@/static/logo.png" />
-        <text>网易云音乐</text>
+        <image class="tag-image" src="@/static/logo.png" />
+        <text class="tag-text">网易云音乐</text>
       </view>
       <view class="introduce" @click="toSongListIntroduce">
-        <text class="description-text">{{ descriptionTop }}</text>
-        <text
-          ><text>{{ descriptionBottom }}</text></text
-        >
-        <text class="iconfont icon-more"></text>
+        <text class="tag-text description-text">{{ descriptionTop }}</text>
+        <text class="tag-text">
+          <text class="tag-text">{{ descriptionBottom }}</text>
+        </text>
+        <text class="tag-text iconfont icon-more"></text>
       </view>
       <view>
         <!-- flex占位 -->
@@ -29,7 +29,7 @@
     </view>
     <view class="share-btn-box">
       <view class="share-btn">
-        <text class="iconfont icon-share"></text>
+        <text class="tag-text iconfont icon-share"></text>
         分享给微信好友
       </view>
     </view>
@@ -131,12 +131,12 @@ export default {
     border-radius: 15rpx;
     position: relative;
 
-    image {
+    .tag-image {
       width: 100%;
       height: 100%;
     }
 
-    text {
+    .tag-text {
       position: absolute;
       right: 10rpx;
       top: 4rpx;
@@ -159,13 +159,13 @@ export default {
       height: var(--logo-size);
       display: flex;
 
-      image {
+      .tag-image {
         width: var(--logo-size);
         height: var(--logo-size);
         display: block;
       }
 
-      text {
+      .tag-text {
         font-size: 25rpx;
         line-height: var(--logo-size);
         margin-left: 13rpx;
@@ -175,13 +175,13 @@ export default {
     .introduce {
       font-size: 12px;
       opacity: 0.6;
-      & > text:first-child {
+      & > .tag-text:first-child {
         float: left;
         width: calc(100% - 2em);
         height: 1.5em;
         overflow: hidden;
       }
-      & > text:nth-child(2) {
+      & > .tag-text:nth-child(2) {
         max-width: calc(100% - 2em);
         float: left;
         display: -webkit-box;
@@ -190,7 +190,7 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      & > text:last-child {
+      & > .tag-text:last-child {
         height: 50%;
         font-size: 12px;
         float: left;
@@ -222,7 +222,7 @@ export default {
         font-size: 1em;
       }
 
-      text {
+      .tag-text {
         margin-right: 10rpx;
       }
     }

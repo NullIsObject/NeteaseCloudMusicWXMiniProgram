@@ -1,7 +1,7 @@
 <template>
   <view class="player-area">
     <view class="title">
-      <image src="@/static/logo.png" mode="widthFix" />
+      <image class="tag-image" src="@/static/logo.png" mode="widthFix" />
       网易云音乐
     </view>
     <view class="img-box">
@@ -10,8 +10,8 @@
           class="record"
           :style="'transform:rotate(' + recordRotate + 'deg'"
         >
-          <image mode="widthFix" src="@/static/record.png" />
-          <image mode="widthFIx" :src="musicData.al.picUrl" class="bg-img" />
+          <image class="tag-image" mode="widthFix" src="@/static/record.png" />
+          <image mode="widthFIx" :src="musicData.al.picUrl" class="bg-img tag-image" />
         </view>
         <view
           class="btn iconfont icon-play-that"
@@ -24,7 +24,7 @@
       <view
         class="item"
         v-for="(val, index) in thatMusicYric"
-        :key="val.id + val.value"
+        :key="add(val.id, val.value)"
         :class="index == lyricFocus && 'mark'"
         >{{ val.value }}
       </view>
@@ -52,7 +52,7 @@ export default {
   },
   watch: {
     playingMusicId(val) {
-      this.isPlayMusic = (val == this.pageMusicId);
+      this.isPlayMusic = val == this.pageMusicId;
     },
     isPlayMusic(val) {
       if (val) {
@@ -71,7 +71,9 @@ export default {
         this.lyricInterval = setInterval(() => {
           if (this.$bgAudioManager.paused) this.isPlayMusic = false;
           for (let i = 0; i < this.thatMusicYric.length; i++) {
-            if (this.thatMusicYric[i].date >= this.$bgAudioManager.currentTime) {
+            if (
+              this.thatMusicYric[i].date >= this.$bgAudioManager.currentTime
+            ) {
               this.lyricFocus = i - 1;
               break;
             }
@@ -129,6 +131,10 @@ export default {
         this.isPlayMusic = false;
       }
     },
+    add(a, b) {
+      //兼容小程序
+      return a + b;
+    },
   },
   props: {
     musicData: {
@@ -147,7 +153,7 @@ export default {
     this.$api.yric(this.pageMusicId).then((res) => {
       this.thatMusicYric = this.lyricDispose(res.data.lrc.lyric);
     });
-    this.isPlayMusic = (this.playingMusicId == this.pageMusicId);
+    this.isPlayMusic = this.playingMusicId == this.pageMusicId;
   },
 };
 </script>
@@ -160,7 +166,7 @@ export default {
     height: 30px;
     display: flex;
     align-items: center;
-    image {
+    .tag-image {
       width: 20px;
       margin-right: 5px;
     }
@@ -181,7 +187,7 @@ export default {
         width: 100%;
         height: 100%;
         position: absolute;
-        image {
+        .tag-image {
           width: 100%;
         }
         .bg-img {
@@ -214,7 +220,7 @@ export default {
       opacity: 0.5;
       &:first-child {
         margin-top: calc(-2.2em * max((var(--lyricFocus) - 1), 0));
-        transition: .5s;
+        transition: 0.5s;
       }
     }
     .item.mark {

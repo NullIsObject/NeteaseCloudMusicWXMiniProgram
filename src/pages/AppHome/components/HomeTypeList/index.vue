@@ -1,7 +1,7 @@
 <template>
   <view class="home-type-list" @click="goToURL">
     <view class="header">
-      <image :src="data.coverImgUrl" />
+      <image class="tag-image" :src="data.coverImgUrl" />
       <text class="update-date">{{ data.updateFrequency }}</text>
     </view>
     <view class="music">
@@ -45,7 +45,7 @@ export default {
     font-weight: bold;
     overflow: hidden;
 
-    image {
+    .tag-image {
       width: 100%;
       height: 100%;
     }

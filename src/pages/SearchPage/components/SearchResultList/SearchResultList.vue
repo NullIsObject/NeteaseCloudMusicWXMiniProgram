@@ -40,7 +40,7 @@ export default {
   methods: {
     giveKeywordColor(str, keyword = this.searchInputValue) {
       let res = ""; //结果
-      const labelL = `<mark style="color:#507DAF;background: none;">`;
+      const labelL = `<mark class="mark" style="color:#507DAF;background: none;">`;
       const labelR = "</mark>";
       const arr = str.split("");
       str = str.toLowerCase();//匹配结果不区分字符大小写，所以全部转小写匹配
@@ -69,7 +69,7 @@ export default {
   display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  mark {
+  .mark {
     color: #507daf;
     background: none;
   }
