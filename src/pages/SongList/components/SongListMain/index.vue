@@ -65,7 +65,6 @@ export default {
     },
     playAllMusic() {
       const musicDataArr = [];
-      console.log(this.allMusicList[3]);
       this.allMusicList.forEach((val) => {
         musicDataArr.push({
           musicID: val.id,
