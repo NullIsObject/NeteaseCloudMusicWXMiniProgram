@@ -21,7 +21,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## 说明
 
-### 这是一个仿照网易云音乐听歌小程序制作的app，兼容H5端和微信小程序端，其中部分内容做了修改
+### 这是一个仿照网易云音乐听歌小程序制作的app，使用uniapp脚手架兼容H5端和微信小程序端，其中部分内容做了修改
 
 ## 运行
 
