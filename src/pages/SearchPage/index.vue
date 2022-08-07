@@ -3,7 +3,7 @@
     <view class="header">
       <SearchPageHeader />
       <view class="search-box">
-        <SearchInput :addSearchHistory="addSearchHistory"/>
+        <SearchInput :addSearchHistory="addSearchHistory" />
       </view>
     </view>
     <SearchMain
@@ -17,7 +17,7 @@ import SearchPageHeader from "./components/SearchPageHeader/SearchPageHeader";
 import SearchInput from "./components/SearchInput/SearchInput";
 import SearchMain from "./components/SearchMain/SearchMain.vue";
 
-import {mapState} from "vuex"
+import { mapState } from "vuex";
 
 let that;
 
@@ -32,11 +32,11 @@ export default {
     that = this;
     return {
       searchHistory: [],
-      searchResultOffset:0//下一次为搜索结果添加数据的页数
+      searchResultOffset: 0, //下一次为搜索结果添加数据的页数
     };
   },
-  computed:{
-    ...mapState('search',['searchResult','searchInputValue'])
+  computed: {
+    ...mapState("search", ["searchResult", "searchInputValue"]),
   },
   methods: {
     addSearchHistory(newVal) {
@@ -63,10 +63,10 @@ export default {
         data: val,
       });
     },
-    searchInputValue(){
-      this.searchResultOffset=0
-      this.$store.dispatch("search/clearSearchResult")
-    }
+    searchInputValue() {
+      this.searchResultOffset = 0;
+      this.$store.dispatch("search/clearSearchResult");
+    },
   },
   created() {
     uni.getStorage({
@@ -75,12 +75,16 @@ export default {
         this.searchHistory = res.data;
       },
     });
+    this.$store.dispatch("search/clearSearchResult");
   },
-  onReachBottom(){
-    if(this.searchResult.length){
-      this.$store.dispatch("search/sendSearch",{keywords:this.searchInputValue,offset:++this.searchResultOffset})
+  onReachBottom() {
+    if (this.searchResult.length) {
+      this.$store.dispatch("search/sendSearch", {
+        keywords: this.searchInputValue,
+        offset: ++this.searchResultOffset,
+      });
     }
-  }
+  },
 };
 </script>
 <style lang="scss">

@@ -1,6 +1,9 @@
 <template>
   <view class="app-home">
     <HomeHeader />
+    <view class="loading" v-if="!isLoaded">
+      <AppLoading size="50px"/>
+    </view>
     <HomeSearch />
     <HomeTypeList v-for="val in topListDetail" :key="val.id" :data="val" />
   </view>
@@ -18,10 +21,12 @@ export default {
     HomeSearch,
   },
   computed: {
-    ...mapState("topList", ["topListDetail"]),
+    ...mapState("topList", ["topListDetail","isLoaded"]),
   },
   created() {
-    this.$store.dispatch("topList/sendTopListDetail");
+    this.$store.dispatch("topList/sendTopListDetail").then((res)=>{
+      this.$store.dispatch("topList/loaded")
+    })
   }
 };
 </script>
@@ -30,5 +35,16 @@ export default {
 .app-home {
   width: $body-width;
   margin: auto;
+  position: relative;
+  .loading{
+    position: absolute;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: 40%;
+  }
 }
 </style>

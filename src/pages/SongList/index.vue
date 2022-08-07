@@ -1,6 +1,9 @@
 <template>
   <view class="song-list" :style="'--bgcolor:' + bgcolor">
     <view class="box">
+      <view class="loading" v-if="!isLoded">
+        <AppLoading size="50px" />
+      </view>
       <SongListHeader />
       <scroll-view class="main" scroll-y="true" @scrolltolower="loadMore">
         <SongListCover :pageData="pageData"></SongListCover>
@@ -35,6 +38,7 @@ export default {
         playCount: "",
       },
       bgcolor: "white",
+      isLoded: false,
     };
   },
   methods: {
@@ -69,13 +73,14 @@ export default {
       this.pageData = res.data.playlist;
       this.musicListData = this.pageData.tracks;
       this.getBgColor();
+      this.isLoded = true;
     });
   },
   onShareAppMessage() {
     return {
-      title: "分享歌单："+this.pageData.name,
+      title: "分享歌单：" + this.pageData.name,
       path: "/pages/SongList/index?id=" + this.pageData.id,
-      imageUrl: this.pageData.coverImgUrl
+      imageUrl: this.pageData.coverImgUrl,
     };
   },
 };
@@ -92,6 +97,14 @@ export default {
     width: 100%;
     height: 100%;
     backdrop-filter: blur(30px);
+    .loading {
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      z-index: 1;
+      padding-top: 50%;
+      background-color: white;
+    }
   }
   .main {
     height: calc(100vh - $wx-header-height);

@@ -6,7 +6,7 @@
       <view class="go-home iconfont icon-home" @click="goHome"></view>
     </view>
     <view class="title">
-      <slot>网易云音乐</slot>
+      <view class="text"><slot>网易云音乐</slot></view>
     </view>
   </view>
 </template>
@@ -93,7 +93,7 @@ export default {
     top: var(--capsule-top);
     left: calc(750rpx - var(--capsule-right));
     right: calc(100vw - var(--capsule-width) - 20rpx);
-    z-index: 1;
+    z-index: 2;
 
     .iconfont {
       width: 50%;
@@ -120,6 +120,13 @@ export default {
     height: var(--capsule-height);
     top: var(--capsule-top);
     line-height: var(--capsule-height);
+    .text{
+      overflow: hidden;
+      display: inline-block;
+      width: 40%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 }
 </style>

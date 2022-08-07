@@ -9,6 +9,9 @@
         <AppHeader :isShowBtnBox="true" class="header">
           {{ musicData.name }}
         </AppHeader>
+        <view class="loading" v-if="!isLoadData">
+          <AppLoading size="50px" />
+        </view>
         <scroll-view
           class="scroll-box"
           scroll-y="true"
@@ -114,9 +117,17 @@ export default {
   .header {
     color: white;
   }
+  &>.loading {
+    position: fixed;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    top: 0;
+    padding-top: 50%;
+  }
   .scroll-box {
     height: calc(100vh - $wx-header-height);
-
     .main {
       width: $body-width;
       margin: auto;

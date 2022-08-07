@@ -46,6 +46,7 @@ export default {
 <style lang="scss">
 .hot-list {
   font-size: 30rpx;
+  background-color: white;
 
   .ul {
     .li {

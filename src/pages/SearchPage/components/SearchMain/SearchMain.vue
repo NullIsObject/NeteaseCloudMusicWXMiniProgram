@@ -28,10 +28,14 @@ export default {
     SearchResult,
   },
   computed: {
-    ...mapState("search", { searchResultData: "searchResult",isInSearch:"isInSearch" }),
-    searchResultDataLength(){//判断显示哪部分组件，直接使用“searchResultData.length”在微信小程序端会有bug
-      return this.searchResultData.length
-    }
+    ...mapState("search", {
+      searchResultData: "searchResult",
+      isInSearch: "isInSearch",
+    }),
+    searchResultDataLength() {
+      //判断显示哪部分组件，直接使用“searchResultData.length”在微信小程序端会有bug
+      return this.searchResultData.length;
+    },
   },
   props: {
     searchHistory: {
@@ -59,7 +63,7 @@ export default {
 .search-main {
   width: $body-width;
   margin: auto;
-  .loading-box{
+  .loading-box {
     width: 100%;
     padding: 10px;
   }
