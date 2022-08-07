@@ -25,6 +25,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## 运行
 
-### 1.须使用下载对应的后台项目：https://github.com/Binaryify/NeteaseCloudMusicApi
+### 1.须下载对应的后台项目：https://github.com/Binaryify/NeteaseCloudMusicApi
 
 ### 2.运行此项目前，请先将文件："APP/src/api/request.js" 中第二行"baseUrl"，的url进行修改
